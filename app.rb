@@ -1,11 +1,6 @@
 require 'sinatra'
 set server: 'thin', connections: []
 
-# settings do
-#   set :server, :thin
-#   set :connections, []
-# end
-
 get '/' do
   @user = params[:user]
   unless @user
@@ -62,7 +57,8 @@ __END__
 @@ chat
 <section id="chat">
   <div id="messages"></div>
-  <form id="chat_form" method="POST">
+  <hr/>
+  <form>
     <input id="message" name="message" placeholder="your message..." />
     <input type="submit" value="Send" />
   </form>
@@ -74,13 +70,13 @@ __END__
         console.log( 'Fuck: '+e.data );
         $('#messages').append(e.data + "<br/>")
       };
-      $("#chat_form").submit(function(e) {
+      $("form").live("submit", function(e) {
         var message = $('#message');
         $.post('/', {message: "<%= @user %>: "+message.val()});
         message.val('');
         message.focus();
+        e.preventDefault();
         return false;
-        // eve.preventDefault();
       });
     });
   </script>
